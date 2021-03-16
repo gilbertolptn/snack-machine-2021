@@ -17,6 +17,18 @@ public class Estoque {
         this.quantidade = quantidade;
     }
 
+    public boolean temDisponivel() {
+//        if(quantidade > 0){
+//            return true;
+//        }
+//        return false;
+        return quantidade > 0;
+    }
+
+    public Produto getProduto() {
+        return produto;
+    }
+    
     /*public Estoque(short idProduto, Float precoProduto, String descricaoProduto, Integer quantidade) {
         this.produto = new Produto(idProduto, precoProduto, descricaoProduto);
         this.quantidade = quantidade;
