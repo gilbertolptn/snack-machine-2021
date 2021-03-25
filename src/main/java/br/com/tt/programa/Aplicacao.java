@@ -15,43 +15,49 @@ public class Aplicacao {
     public static void main(String[] args) {
         criaEstoqueInicial();
         mostraItensParaUsuario();
-        int numeroItem = pedeNumeroItem();
-        System.out.println("Número escolhido:"+numeroItem);
-
+        short itemSelecionado = pedeNumeroItem();
+        solicitaPagamento(itemSelecionado);
         /*
-        solicitaPagamento();
         dispensaProduto();
         ...
         */
     }
 
+    private static void solicitaPagamento(short itemSelecionado) {
+        System.out.println("Número selecionado:"+itemSelecionado);
+        Set<Produto> produtosDisponiveis = obtemProdutosDisponiveis();
+        //for....
+        //Valor...
+        //Pedir dados cartão
+
+    }
+
     private static short pedeNumeroItem() {
-        Set<Short> produtosDisponiveis = new TreeSet<>();
-        for(Estoque estoque : estoques){
-            if(estoque.temDisponivel()){
-                produtosDisponiveis.add(estoque.getProduto().getId());
+        Set<Short> produtosDisponiveis = obtemListaNumerosDisponiveis();
+
+        short numeroEscolhido;
+        do {
+            System.out.println("Informe o código do produto disponível:");
+            String input = new Scanner(System.in).nextLine();
+            try {
+                numeroEscolhido = Short.parseShort(input);
+            }catch (NumberFormatException e){
+                System.out.println("Informe um número válido!");
+                continue;
             }
-        }
 
-        System.out.println("Informe o código do produto disponível:");
-        String input = new Scanner(System.in).nextLine();
-        short numeroEscolhido = Short.valueOf(input);
+            if (produtosDisponiveis.contains(numeroEscolhido)) {
+                break;
+            }
+            System.out.println("Produto não disponível!");
 
-        if( ! produtosDisponiveis.contains(numeroEscolhido)){
-            System.out.println("Código inválido!");
-            return pedeNumeroItem();
-        }
+        }while (true);
 
         return numeroEscolhido;
     }
 
     private static void mostraItensParaUsuario() {
-        Set<Produto> produtosDisponiveis = new TreeSet<>();
-        for(Estoque estoque : estoques){
-            if(estoque.temDisponivel()){
-                produtosDisponiveis.add(estoque.getProduto());
-            }
-        }
+        Set<Produto> produtosDisponiveis = obtemProdutosDisponiveis();
 
         System.out.println("\nItens disponíveis: ");
         for (Produto produto : produtosDisponiveis){
@@ -73,6 +79,25 @@ public class Aplicacao {
         estoques.add(new Estoque(aguaComGas, 10));
     }
 
+    private static Set<Short> obtemListaNumerosDisponiveis() {
+        Set<Short> produtosDisponiveis = new TreeSet<>();
+        for(Estoque estoque : estoques){
+            if(estoque.temDisponivel()){
+                produtosDisponiveis.add(estoque.getProduto().getId());
+            }
+        }
+        return produtosDisponiveis;
+    }
+
+    private static Set<Produto> obtemProdutosDisponiveis() {
+        Set<Produto> produtosDisponiveis = new TreeSet<>();
+        for(Estoque estoque : estoques){
+            if(estoque.temDisponivel()){
+                produtosDisponiveis.add(estoque.getProduto());
+            }
+        }
+        return produtosDisponiveis;
+    }
 /*
     public static void adicionaEstoque(short codigo, float preco, String descricao){
         Produto cocaCola = new Produto(codigo++, preco, descricao);
