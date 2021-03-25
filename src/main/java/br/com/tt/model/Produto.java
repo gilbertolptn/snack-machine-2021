@@ -19,6 +19,10 @@ public class Produto implements Comparable<Produto> {
                             id, descricao, categoria, preco);
     }
 
+    public Short getId() {
+        return id;
+    }
+
     @Override
     public int compareTo(Produto outroProduto) {
 /*        if(this.id == null){

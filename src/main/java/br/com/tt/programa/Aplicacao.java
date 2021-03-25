@@ -15,12 +15,34 @@ public class Aplicacao {
     public static void main(String[] args) {
         criaEstoqueInicial();
         mostraItensParaUsuario();
+        int numeroItem = pedeNumeroItem();
+        System.out.println("Número escolhido:"+numeroItem);
+
         /*
-        pedeNumeroItem();
         solicitaPagamento();
         dispensaProduto();
         ...
         */
+    }
+
+    private static short pedeNumeroItem() {
+        Set<Short> produtosDisponiveis = new TreeSet<>();
+        for(Estoque estoque : estoques){
+            if(estoque.temDisponivel()){
+                produtosDisponiveis.add(estoque.getProduto().getId());
+            }
+        }
+
+        System.out.println("Informe o código do produto disponível:");
+        String input = new Scanner(System.in).nextLine();
+        short numeroEscolhido = Short.valueOf(input);
+
+        if( ! produtosDisponiveis.contains(numeroEscolhido)){
+            System.out.println("Código inválido!");
+            return pedeNumeroItem();
+        }
+
+        return numeroEscolhido;
     }
 
     private static void mostraItensParaUsuario() {
